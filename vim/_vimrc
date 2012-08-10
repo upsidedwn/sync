@@ -30,6 +30,8 @@ if has("gui_running")
     set guifont=Consolas\ For\ Powerline\ FixedD:h11
     set guioptions+=b
     set guioptions-=T
+else
+    colorscheme torte
 endif
 
 " Set VIM options
@@ -64,8 +66,10 @@ set ignorecase smartcase
 set hidden
 set omnifunc=syntaxcomplete#Complete
 
-set backupdir=$HOME\.vim\backups
-set directory=$HOME\.vim\swaps
+set backupdir=$HOME/.vim/backups
+set directory=$HOME/.vim/swaps
+
+" autocmd Filetype python set tabstop=8
 
 au BufWritePost,BufLeave,WinLeave ?* silent! mkview
 au BufWinEnter ?* silent! loadview
