@@ -1,0 +1,174 @@
+set nocompatible
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+" Vundle required settings
+filetype off
+set runtimepath=$VIMRUNTIME
+set runtimepath+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+" Original repos on github
+Bundle 'tomasr/molokai'
+Bundle 'kien/ctrlp.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
+Bundle 'scrooloose/nerdtree'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'ervandew/supertab'
+" Vim-script repos
+Bundle 'Align'
+Bundle 'taglist.vim'
+Bundle 'OmniCppComplete'
+" Non Github repos here
+
+" GUI Options
+if has("gui_running")
+    colorscheme molokai
+    set guifont=Consolas\ For\ Powerline\ FixedD:h11
+    set guioptions+=b
+    set guioptions-=T
+endif
+
+" Set VIM options
+filetype plugin indent on
+syn on
+set encoding=utf-8
+set wrap
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent smartindent
+set number
+set backspace=2
+set backup writebackup
+set visualbell
+set scrolloff=1
+set ruler
+set laststatus=2
+set textwidth=0
+set whichwrap=b,s,h,l,<,>,[,],~
+set clipboard=unnamed
+set showmode
+set showcmd
+set incsearch
+set hlsearch
+set background=dark
+set foldmethod=manual
+set linebreak
+set cursorline
+set nosol
+set ignorecase smartcase
+set hidden
+set omnifunc=syntaxcomplete#Complete
+
+set backupdir=$HOME\.vim\backups
+set directory=$HOME\.vim\swaps
+
+au BufWritePost,BufLeave,WinLeave ?* silent! mkview
+au BufWinEnter ?* silent! loadview
+
+" Plugin variables here
+"
+" Variables for SuperTab
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" Variables for OmniCpp
+let g:OmniCpp_ShowPrototypeInAbbr = 1
+let g:OmniCpp_MayCompleteScope = 1
+
+" Variables for CtrlP
+let g:ctrlp_cache_dir = $HOME.'/.vim/ctrlpcache'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_working_path_mode = 0
+
+" Variables for Powerline
+let g:Powerline_symbols="fancy"
+
+" Vim variables here
+let mapleader=","
+
+" Variables for ctags
+" set tags+=$HOME\.vim\tags\cpp
+" ctags --c++-kinds=+p --fields=+iaS --extra=+q test1.cpp
+
+" Remap keys here
+"
+" To map up/down keys not to jump lines with wrapmargin on
+nnoremap <Down> gj
+nnoremap <Up> gk
+vnoremap <Down> gj
+vnoremap <Up> gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+
+"Sets alt+z to remove characters at the start of each line
+nnoremap <A-z> :%s/^.\{1}//<CR>
+
+"Remove duplicate lines
+nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
+
+"Edit _vimrc
+nnoremap <leader>v :vs $MYVIMRC<CR>
+
+" Short scripts here
+"
+" Highlight all instances of word under cursor, when idle.
+" Useful when studying strange source code.
+" Type z/ to toggle highlighting on/off.
+" http://vim.wikia.com/wiki/Auto_highlight_current_word_when_idle
+nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+function! AutoHighlightToggle()
+  let @/ = ''
+  if exists('#auto_highlight')
+    au! auto_highlight
+    augroup! auto_highlight
+    setl updatetime=4000
+    echo 'Highlight current word: off'
+    return 0
+  else
+    augroup auto_highlight
+      au!
+      au CursorHold * let @/ = '\<'.expand('<cword>').'\>'
+    augroup end
+    setl updatetime=500
+    echo 'Highlight current word: ON'
+    return 1
+  endif
+endfunction
+
+" Copy matches of the last search to a register (default is the clipboard).
+" Accepts a range (default is whole file).
+" 'CopyMatches'   copy matches to clipboard (each match has \n added).
+" 'CopyMatches x' copy matches to register x (clears register first).
+" 'CopyMatches X' append matches to register x.
+" We skip empty hits to ensure patterns using '\ze' don't loop forever.
+command! -range=% -register CopyMatches call s:CopyMatches(<line1>, <line2>, '<reg>')
+function! s:CopyMatches(line1, line2, reg)
+  let hits = []
+  for line in range(a:line1, a:line2)
+    let txt = getline(line)
+    let idx = match(txt, @/)
+    while idx >= 0
+      let end = matchend(txt, @/, idx)
+      if end > idx
+	call add(hits, strpart(txt, idx, end-idx))
+      else
+	let end += 1
+      endif
+      if @/[0] == '^'
+        break  " to avoid false hits
+      endif
+      let idx = match(txt, @/, end)
+    endwhile
+  endfor
+  if len(hits) > 0
+    let reg = empty(a:reg) ? '+' : a:reg
+    execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+  else
+    echo 'No hits'
+  endif
+endfunction
+
