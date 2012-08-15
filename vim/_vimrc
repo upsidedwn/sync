@@ -1,6 +1,7 @@
 set nocompatible
 source $VIMRUNTIME/mswin.vim
 behave mswin
+autocmd!
 
 " Vundle required settings
 filetype off
@@ -19,8 +20,10 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'ervandew/supertab'
+Bundle 'mileszs/ack.vim'
 " Vim-script repos
 Bundle 'Align'
+Bundle 'Solarized'
 Bundle 'taglist.vim'
 Bundle 'OmniCppComplete'
 " Non Github repos here
@@ -36,7 +39,7 @@ if has("gui_running")
     let g:Powerline_symbols="fancy"
 else
     set encoding=latin1
-    colorscheme torte
+    colorscheme solarized
 endif
 
 " Set VIM options
@@ -151,4 +154,16 @@ function! CopyMatches(reg)
   execute 'let @'.reg.' = join(hits, "\n") . "\n"'
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
+
+"Compile C/C++ code
+autocmd Filetype c,cpp,hpp,h nnoremap <leader>r :call RunProg()<CR>
+function! RunProg()
+    exec "%:r.exe"
+endfunc
+
+autocmd Filetype c,cpp,hpp,h nnoremap <leader>m :call CompileRunGcc()<CR>
+function! CompileRunGcc()
+    exec "w"
+    exec "!gcc -Wall -lm % -o %:r.exe"
+endfunc
 
