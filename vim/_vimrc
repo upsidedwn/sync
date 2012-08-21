@@ -80,6 +80,7 @@ set directory=$HOME/.vim/swaps
 
 au BufWritePost,BufLeave,WinLeave ?* silent! mkview
 au BufWinEnter ?* silent! loadview
+au BufWritePost .vimrc source %
 
 " Plugin variables here
 "
