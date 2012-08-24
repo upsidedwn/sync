@@ -21,6 +21,7 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'ervandew/supertab'
 Bundle 'mileszs/ack.vim'
+Bundle 'tpope/vim-fugitive'
 " Vim-script repos
 Bundle 'Align'
 Bundle 'Solarized'
@@ -98,6 +99,7 @@ let g:ctrlp_working_path_mode = 0
 
 " Vim variables here
 let mapleader=","
+" let maplocalleader=","
 
 " Variables for ctags
 " set tags+=$HOME\.vim\tags\cpp
@@ -118,6 +120,9 @@ nnoremap <A-z> :%s/^.\{1}//<CR>
 
 "Remove duplicate lines
 nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
+
+" Set AlignMap's mappings to use \ so that it does not conflict with compile.
+nnoremap \m= <Plug>AM_m=
 
 "Edit _vimrc
 nnoremap <leader>v :vs $MYVIMRC<CR>
