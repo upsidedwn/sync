@@ -80,10 +80,10 @@ set backupdir=$HOME/.vim/backups
 set directory=$HOME/.vim/swaps
 
 " autocmd Filetype python set tabstop=8
-
 au BufWritePost,BufLeave,WinLeave ?* silent! mkview
 au BufWinEnter ?* silent! loadview
 au BufWritePost .vimrc source %
+au BufReadPost fugitive://* set bufhidden=delete
 
 " Plugin variables here
 "
@@ -117,22 +117,27 @@ vnoremap <Up> gk
 inoremap <Down> <C-o>gj
 inoremap <Up> <C-o>gk
 
-"Sets <leader>d to set vim to change to the directory of current open file
-nnoremap <leader>d :cd %:p:h
-
-"Sets alt+z to remove characters at the start of each line
-nnoremap <A-z> :%s/^.\{1}//<CR>
-
-"Remove duplicate lines
-nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
-
 " Set unused mappings to use \ so that it does not conflict with other key
 " bindings.
 nnoremap \m= <Plug>AM_m=
 nnoremap \r,= <Plug>RestoreWinPosn
 
-"Edit _vimrc
+" Sets <leader>d to set vim to change to the directory of current open file
+nnoremap <leader>d :cd %:p:h<CR>
+
+" Sets alt+z to remove characters at the start of each line
+nnoremap <A-z> :%s/^.\{1}//<CR>
+
+" Remove duplicate lines
+nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
+
+" Edit _vimrc
 nnoremap <leader>v :vs $MYVIMRC<CR>
+
+" Git bindings, used together with fugitive.
+nnoremap <leader>ga :Git add %<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gp :Git push<CR>
 
 " Short scripts here
 "
