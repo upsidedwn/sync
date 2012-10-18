@@ -22,6 +22,7 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'ervandew/supertab'
 Bundle 'mileszs/ack.vim'
 Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/syntastic'
 " Vim-script repos
 Bundle 'Align'
 Bundle 'Solarized'
@@ -50,7 +51,7 @@ set wrap
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set autoindent smartindent
+set autoindent
 set number
 set backspace=2
 set backup writebackup
@@ -71,6 +72,7 @@ set linebreak
 set cursorline
 set nosol
 set ignorecase smartcase
+set selection=inclusive
 set hidden
 set omnifunc=syntaxcomplete#Complete
 
@@ -115,14 +117,19 @@ vnoremap <Up> gk
 inoremap <Down> <C-o>gj
 inoremap <Up> <C-o>gk
 
+"Sets <leader>d to set vim to change to the directory of current open file
+nnoremap <leader>d :cd %:p:h
+
 "Sets alt+z to remove characters at the start of each line
 nnoremap <A-z> :%s/^.\{1}//<CR>
 
 "Remove duplicate lines
 nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
 
-" Set AlignMap's mappings to use \ so that it does not conflict with compile.
+" Set unused mappings to use \ so that it does not conflict with other key
+" bindings.
 nnoremap \m= <Plug>AM_m=
+nnoremap \r,= <Plug>RestoreWinPosn
 
 "Edit _vimrc
 nnoremap <leader>v :vs $MYVIMRC<CR>
@@ -161,15 +168,21 @@ function! CopyMatches(reg)
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
 
-"Compile C/C++ code
+"Compile and run C/C++ code
 autocmd Filetype c,cpp,hpp,h nnoremap <leader>r :call RunProg()<CR>
 function! RunProg()
-    exec "%:r.exe"
+    exec "!%:r.exe"
 endfunc
 
 autocmd Filetype c,cpp,hpp,h nnoremap <leader>m :call CompileRunGcc()<CR>
 function! CompileRunGcc()
     exec "w"
-    exec "!gcc -Wall -lm % -o %:r.exe"
+    "exec "!gcc -Wall -lm % -o %:r.exe"
+    exec "!cl /EHa /RTCu /Wall /Fe%:r.exe %"
+endfunc
+
+autocmd Filetype py nnoremap <leader>r :call RunPythonProg()<CR>
+function! RunPythonProg()
+    exec "!python %"
 endfunc
 
