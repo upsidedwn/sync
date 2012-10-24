@@ -28,6 +28,7 @@ Bundle 'Align'
 Bundle 'Solarized'
 Bundle 'taglist.vim'
 Bundle 'OmniCppComplete'
+Bundle 'votl'
 " Non Github repos here
 
 " GUI Options
@@ -82,7 +83,7 @@ set directory=$HOME/.vim/swaps
 " autocmd Filetype python set tabstop=8
 au BufWritePost,BufLeave,WinLeave ?* silent! mkview
 au BufWinEnter ?* silent! loadview
-au BufWritePost .vimrc source %
+au BufWritePost _vimrc source %
 au BufReadPost fugitive://* set bufhidden=delete
 
 " Plugin variables here
@@ -186,7 +187,7 @@ function! CompileRunGcc()
     exec "!cl /EHa /RTCu /Wall /Fe%:r.exe %"
 endfunc
 
-autocmd Filetype py nnoremap <leader>r :call RunPythonProg()<CR>
+autocmd Filetype python nnoremap <leader>r :call RunPythonProg()<CR>
 function! RunPythonProg()
     exec "!python %"
 endfunc
