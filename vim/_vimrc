@@ -23,12 +23,17 @@ Bundle 'ervandew/supertab'
 Bundle 'mileszs/ack.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/syntastic'
+Bundle 'mattn/calendar-vim'
+Bundle 'brookhong/cscope.vim'
+Bundle 'nvie/vim-rst-tables'
+
 " Vim-script repos
 Bundle 'Align'
 Bundle 'Solarized'
 Bundle 'taglist.vim'
 Bundle 'OmniCppComplete'
 Bundle 'votl'
+
 " Non Github repos here
 
 " GUI Options
@@ -134,6 +139,10 @@ nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
 
 " Edit _vimrc
 nnoremap <leader>v :vs $MYVIMRC<CR>
+
+" Edit work log
+nnoremap <Leader>wl : e D:/Documents/work_log.votl<CR>
+nnoremap <Leader>sl : vs D:/Documents/scratch_log.votl<CR>
 
 " Git bindings, used together with fugitive.
 nnoremap <leader>ga :Git add %<CR>
