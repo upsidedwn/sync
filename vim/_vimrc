@@ -94,7 +94,9 @@ au BufReadPost fugitive://* set bufhidden=delete
 " Plugin variables here
 "
 " Variables for SuperTab
-let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Variables for OmniCpp
 let g:OmniCpp_ShowPrototypeInAbbr = 1
