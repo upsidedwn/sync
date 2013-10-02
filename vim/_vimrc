@@ -26,6 +26,9 @@ Bundle 'scrooloose/syntastic'
 Bundle 'mattn/calendar-vim'
 Bundle 'brookhong/cscope.vim'
 Bundle 'nvie/vim-rst-tables'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'hdima/python-syntax'
+Bundle 'ivanov/vim-ipython'
 
 " Vim-script repos
 Bundle 'Align'
@@ -96,7 +99,7 @@ au BufReadPost fugitive://* set bufhidden=delete
 " Variables for SuperTab
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:SuperTabClosePreviewOnPopupClose = 1
+"let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Variables for OmniCpp
 let g:OmniCpp_ShowPrototypeInAbbr = 1
@@ -106,6 +109,9 @@ let g:OmniCpp_MayCompleteScope = 1
 let g:ctrlp_cache_dir = $HOME.'/.vim/ctrlpcache'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_working_path_mode = 0
+
+" Variables for Syntastic
+let g:syntastic_python_checkers = ['pyflakes']
 
 " Vim variables here
 let mapleader=","
@@ -143,7 +149,7 @@ nnoremap dp :%s/^\(.*\)\(\n\1\)\+$/\1/<CR>
 nnoremap <leader>v :vs $MYVIMRC<CR>
 
 " Edit work log
-nnoremap <Leader>wl : e D:/Documents/work_log.votl<CR>
+nnoremap <Leader>wl : e D:/Documents/work_log.votl<CR> | execute "normal ,,jc"
 nnoremap <Leader>sl : vs D:/Documents/scratch_log.votl<CR>
 
 " Git bindings, used together with fugitive.
@@ -201,5 +207,11 @@ endfunc
 autocmd Filetype python nnoremap <leader>r :call RunPythonProg()<CR>
 function! RunPythonProg()
     exec "!python %"
+endfunc
+autocmd Filetype python setl sts=2 sw=2
+
+autocmd Filetype ruby nnoremap <leader>r :call RunRubyProg()<CR>
+function! RunRubyProg()
+    exec "!ruby %"
 endfunc
 
